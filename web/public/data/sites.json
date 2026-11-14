@@ -1,0 +1,97 @@
+{
+  "mock": true,
+  "note": "Synthetic data and approximate coordinates. Replace public/data/ with the real Moon Trek exports.",
+  "sites": [
+    {
+      "id": "faustini-rim-a",
+      "name": "Faustini Rim A",
+      "lat": -87.1,
+      "lon": 82,
+      "file": "faustini-rim-a.csv"
+    },
+    {
+      "id": "peak-near-shackleton",
+      "name": "Peak Near Shackleton",
+      "lat": -88.8,
+      "lon": 124,
+      "file": "peak-near-shackleton.csv"
+    },
+    {
+      "id": "connecting-ridge",
+      "name": "Connecting Ridge",
+      "lat": -89.4,
+      "lon": -137,
+      "file": "connecting-ridge.csv"
+    },
+    {
+      "id": "connecting-ridge-extension",
+      "name": "Connecting Ridge Extension",
+      "lat": -89,
+      "lon": -100,
+      "file": "connecting-ridge-extension.csv"
+    },
+    {
+      "id": "de-gerlache-rim-1",
+      "name": "de Gerlache Rim 1",
+      "lat": -88.7,
+      "lon": -68,
+      "file": "de-gerlache-rim-1.csv"
+    },
+    {
+      "id": "de-gerlache-rim-2",
+      "name": "de Gerlache Rim 2",
+      "lat": -88.3,
+      "lon": -64,
+      "file": "de-gerlache-rim-2.csv"
+    },
+    {
+      "id": "de-gerlache-kocher-massif",
+      "name": "de Gerlache-Kocher Massif",
+      "lat": -85.8,
+      "lon": -115,
+      "file": "de-gerlache-kocher-massif.csv"
+    },
+    {
+      "id": "haworth",
+      "name": "Haworth",
+      "lat": -86.8,
+      "lon": -15,
+      "file": "haworth.csv"
+    },
+    {
+      "id": "malapert-massif",
+      "name": "Malapert Massif",
+      "lat": -85.9,
+      "lon": 0,
+      "file": "malapert-massif.csv"
+    },
+    {
+      "id": "leibnitz-beta-plateau",
+      "name": "Leibnitz Beta Plateau",
+      "lat": -85.4,
+      "lon": 31,
+      "file": "leibnitz-beta-plateau.csv"
+    },
+    {
+      "id": "nobile-rim-1",
+      "name": "Nobile Rim 1",
+      "lat": -84.4,
+      "lon": 61,
+      "file": "nobile-rim-1.csv"
+    },
+    {
+      "id": "nobile-rim-2",
+      "name": "Nobile Rim 2",
+      "lat": -83.9,
+      "lon": 58,
+      "file": "nobile-rim-2.csv"
+    },
+    {
+      "id": "amundsen-rim",
+      "name": "Amundsen Rim",
+      "lat": -84.3,
+      "lon": 70,
+      "file": "amundsen-rim.csv"
+    }
+  ]
+}

@@ -1,0 +1,332 @@
+:root {
+  --bg: #0b0d12;
+  --panel: #141821;
+  --border: #262c38;
+  --text: #e6e8ee;
+  --muted: #8a93a6;
+  --sun: #f5b942;
+  --earth: #4aa8ff;
+  --both: #7ad19a;
+  --accent: #f5b942;
+
+  color-scheme: dark;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.5;
+  color: var(--text);
+  background: var(--bg);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+}
+
+.app {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem 3rem;
+}
+
+.app-header h1 {
+  margin: 0;
+  font-size: 2rem;
+  letter-spacing: 0.04em;
+}
+
+.app-header p {
+  margin: 0.25rem 0 1.5rem;
+  color: var(--muted);
+}
+
+h2 {
+  margin: 0 0 0.75rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.status.error {
+  color: #ff7a7a;
+}
+
+.banner {
+  margin: 0 0 1rem;
+  padding: 0.6rem 0.9rem;
+  border: 1px solid #6b5520;
+  border-radius: 8px;
+  background: #2a2312;
+  color: #f3d58a;
+}
+
+/* Controls */
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.control {
+  margin: 0;
+  padding: 0.75rem 1rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--panel);
+}
+
+.control legend {
+  padding: 0 0.4rem;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.time-inputs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 0.75rem;
+}
+
+.time-inputs label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+input[type='datetime-local'],
+button {
+  font: inherit;
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.35rem 0.6rem;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:hover {
+  border-color: var(--muted);
+}
+
+.weight-slider {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  height: 100%;
+}
+
+.weight-slider input {
+  width: min(280px, 50vw);
+  accent-color: var(--accent);
+}
+
+.weight-slider .sun {
+  color: var(--sun);
+  min-width: 6ch;
+}
+
+.weight-slider .earth {
+  color: var(--earth);
+  min-width: 8ch;
+  text-align: right;
+}
+
+/* Layout */
+
+.content {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: 1rem;
+}
+
+@media (max-width: 900px) {
+  .content {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.panel {
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--panel);
+}
+
+/* Map */
+
+.map {
+  display: block;
+  width: 100%;
+  height: auto;
+  font-size: 9px;
+}
+
+.map-disc {
+  fill: #1a1e27;
+  stroke: var(--border);
+}
+
+.graticule {
+  fill: none;
+  stroke: #303746;
+  stroke-width: 0.6;
+}
+
+.graticule-label {
+  fill: var(--muted);
+  font-size: 7px;
+}
+
+.graticule-label.centered {
+  text-anchor: middle;
+  dominant-baseline: middle;
+}
+
+.pole {
+  fill: var(--muted);
+}
+
+.site {
+  cursor: pointer;
+}
+
+.site .marker {
+  fill: #3a4253;
+  stroke: var(--text);
+  stroke-width: 0.8;
+}
+
+.site.selected .marker {
+  stroke: var(--earth);
+  stroke-width: 2;
+}
+
+.site.top .marker {
+  fill: var(--accent);
+  stroke: #fff;
+}
+
+.site .top-halo {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1.2;
+  opacity: 0.6;
+}
+
+.marker-rank {
+  fill: var(--text);
+  font-size: 7px;
+  font-weight: 700;
+  text-anchor: middle;
+  pointer-events: none;
+}
+
+.site.top .marker-rank {
+  fill: #1a1300;
+}
+
+.marker-name {
+  fill: var(--text);
+  font-size: 9px;
+  font-weight: 600;
+  paint-order: stroke;
+  stroke: var(--bg);
+  stroke-width: 3px;
+  pointer-events: none;
+}
+
+/* Ranking table */
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+.ranking {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.ranking th {
+  padding: 0.4rem 0.5rem;
+  text-align: left;
+  font-weight: 500;
+  color: var(--muted);
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+.ranking td {
+  padding: 0.45rem 0.5rem;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+.ranking tbody tr {
+  cursor: pointer;
+}
+
+.ranking tbody tr:hover {
+  background: #1b202b;
+}
+
+.ranking tbody tr.selected {
+  background: #1a2433;
+}
+
+.ranking tbody tr:first-child .rank {
+  color: var(--accent);
+}
+
+.ranking .rank,
+.ranking .score {
+  font-weight: 700;
+}
+
+.ranking .num,
+.ranking .score {
+  font-variant-numeric: tabular-nums;
+}
+
+.pct {
+  font-variant-numeric: tabular-nums;
+}
+
+.pct .bar {
+  display: inline-block;
+  width: 48px;
+  height: 6px;
+  margin-right: 0.5rem;
+  vertical-align: middle;
+  border-radius: 3px;
+  background: #262c38;
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+}
+
+.bar-fill.sun {
+  background: var(--sun);
+}
+
+.bar-fill.earth {
+  background: var(--earth);
+}
+
+.bar-fill.both {
+  background: var(--both);
+}
