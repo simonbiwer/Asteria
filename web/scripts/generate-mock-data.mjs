@@ -5,29 +5,49 @@
 // seasonal solar declination) and each site gets a random horizon profile.
 // The numbers are NOT physically accurate. Replace with real exports.
 
-import { mkdirSync, writeFileSync } from 'node:fs'
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-const OUT_DIR = join(dirname(fileURLToPath(import.meta.url)), '..', 'public', 'data')
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..')
+const OUT_DIR = join(ROOT, 'public', 'data')
+const REGIONS_FILE = join(ROOT, '..', 'data', 'A3_Named_regions_SP.geojson')
 
-// The 13 Artemis III candidate regions (NASA, Aug 2022).
-// Coordinates are ROUGH placeholders; replace them with the real site centers.
-const SITES = [
-  ['faustini-rim-a', 'Faustini Rim A', -87.1, 82.0],
-  ['peak-near-shackleton', 'Peak Near Shackleton', -88.8, 124.0],
-  ['connecting-ridge', 'Connecting Ridge', -89.4, -137.0],
-  ['connecting-ridge-extension', 'Connecting Ridge Extension', -89.0, -100.0],
-  ['de-gerlache-rim-1', 'de Gerlache Rim 1', -88.7, -68.0],
-  ['de-gerlache-rim-2', 'de Gerlache Rim 2', -88.3, -64.0],
-  ['de-gerlache-kocher-massif', 'de Gerlache-Kocher Massif', -85.8, -115.0],
-  ['haworth', 'Haworth', -86.8, -15.0],
-  ['malapert-massif', 'Malapert Massif', -85.9, 0.0],
-  ['leibnitz-beta-plateau', 'Leibnitz Beta Plateau', -85.4, 31.0],
-  ['nobile-rim-1', 'Nobile Rim 1', -84.4, 61.0],
-  ['nobile-rim-2', 'Nobile Rim 2', -83.9, 58.0],
-  ['amundsen-rim', 'Amundsen Rim', -84.3, 70.0],
+// GeoJSON label -> display name, where the label differs.
+const NAME_FIXES = {
+  'de Gerlache Rim': 'de Gerlache Rim 1',
+  'Peak Near Shakleton': 'Peak Near Shackleton',
+}
+
+const MOON_R = 1737.4
+const toStereo = (lat, lon) => {
+  const k = 2 * MOON_R * Math.tan(Math.PI / 4 + (lat * Math.PI) / 360)
+  return [k * Math.sin((lon * Math.PI) / 180), k * Math.cos((lon * Math.PI) / 180)]
+}
+const fromStereo = (x, y) => [
+  (2 * Math.atan(Math.hypot(x, y) / (2 * MOON_R)) * 180) / Math.PI - 90,
+  (Math.atan2(x, y) * 180) / Math.PI,
 ]
+
+/**
+ * Center of each Artemis III candidate region (NASA, Aug 2022): mean of the
+ * polygon vertices in south polar stereographic coordinates, which avoids
+ * problems with longitudes wrapping around near the pole.
+ */
+function loadSites() {
+  const { features } = JSON.parse(readFileSync(REGIONS_FILE, 'utf8'))
+  return features.map((f) => {
+    const name = NAME_FIXES[f.properties.label] ?? f.properties.label
+    const ring = f.geometry.coordinates[0].slice(0, -1).map(([lon, lat]) => toStereo(lat, lon))
+    const x = ring.reduce((s, p) => s + p[0], 0) / ring.length
+    const y = ring.reduce((s, p) => s + p[1], 0) / ring.length
+    const [lat, lon] = fromStereo(x, y)
+    const id = name.toLowerCase().replace(/[^a-z0-9]+/g, '-')
+    return [id, name, Number(lat.toFixed(4)), Number(lon.toFixed(4))]
+  })
+}
+
+const SITES = loadSites()
 
 const START = Date.UTC(2026, 11, 1)
 const DAYS = 90
@@ -142,7 +162,7 @@ SITES.forEach(([id, , lat, lon], i) => {
 
 const manifest = {
   mock: true,
-  note: 'Synthetic data and approximate coordinates. Replace public/data/ with the real Moon Trek exports.',
+  note: 'Synthetic visibility data at the region centers. Replace public/data/ with the real Moon Trek exports.',
   sites: SITES.map(([id, name, lat, lon]) => ({ id, name, lat, lon, file: `${id}.csv` })),
 }
 writeFileSync(join(OUT_DIR, 'sites.json'), JSON.stringify(manifest, null, 2) + '\n')

@@ -10,6 +10,7 @@ pnpm install
 pnpm dev          # http://localhost:5173
 pnpm build        # static site in dist/
 pnpm mock-data    # regenerate synthetic data in public/data/
+                  # (site coordinates = centers of ../data/A3_Named_regions_SP.geojson)
 ```
 
 ## Data
