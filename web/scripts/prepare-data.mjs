@@ -15,7 +15,7 @@ const CSV_DIR = join(DATA, 'landing-sites')
 const OUT_DIR = join(WEB, 'public', 'data')
 
 const REQUIRED_COLUMNS = ['UTC', 'CAMERA_LAT', 'CAMERA_LON', 'CAMERA_HEIGHT', 'SUN_VIS', 'EARTH_VIS']
-/** Warn if a CSV's camera position is farther than this from the region center. */
+/** Reject a CSV whose camera position is farther than this from the region center. */
 const MAX_OFFSET_KM = 1
 
 // GeoJSON label -> display name, where the label differs.
@@ -33,10 +33,13 @@ const fromStereo = (x, y) => [
   (2 * Math.atan(Math.hypot(x, y) / (2 * MOON_R_KM)) * 180) / Math.PI - 90,
   (Math.atan2(x, y) * 180) / Math.PI,
 ]
+/** Great-circle distance on the Moon (haversine). */
 const distanceKm = (a, b) => {
-  const [ax, ay] = toStereo(a.lat, a.lon)
-  const [bx, by] = toStereo(b.lat, b.lon)
-  return Math.hypot(ax - bx, ay - by)
+  const rad = (d) => (d * Math.PI) / 180
+  const h =
+    Math.sin(rad(b.lat - a.lat) / 2) ** 2 +
+    Math.cos(rad(a.lat)) * Math.cos(rad(b.lat)) * Math.sin(rad(b.lon - a.lon) / 2) ** 2
+  return 2 * MOON_R_KM * Math.asin(Math.sqrt(h))
 }
 
 /** Region centers: mean of polygon vertices in polar stereographic coordinates. */
@@ -53,12 +56,15 @@ function loadRegions() {
   })
 }
 
-/** Checks a CSV's header and camera position. Returns warnings. */
+/**
+ * Checks a CSV's header and camera position. Errors mean the file is unusable
+ * (it would crash the app or describe a different place) and is skipped.
+ */
 function checkCsv(path, site) {
   const lines = readFileSync(path, 'utf8').split(/\r?\n/).filter((l) => l.trim() !== '')
   const header = lines[0].split(',').map((h) => h.trim())
   const missing = REQUIRED_COLUMNS.filter((c) => !header.includes(c))
-  if (missing.length > 0) return { warnings: [`missing column(s) ${missing.join(', ')}`] }
+  if (missing.length > 0) return { errors: [`missing column(s) ${missing.join(', ')}`] }
 
   const col = (name) => header.indexOf(name)
   const first = lines[1].split(',')
@@ -68,16 +74,19 @@ function checkCsv(path, site) {
     lon: Number(first[col('CAMERA_LON')]),
     height: Number(first[col('CAMERA_HEIGHT')]),
   }
-  const warnings = []
+  const errors = []
   if (Number.isNaN(camera.lat) || Number.isNaN(camera.lon)) {
-    warnings.push('first row has an invalid CAMERA_LAT/CAMERA_LON')
+    errors.push('first row has an invalid CAMERA_LAT/CAMERA_LON')
   } else {
     const offset = distanceKm(camera, site)
     if (offset > MAX_OFFSET_KM) {
-      warnings.push(`camera is ${offset.toFixed(1)} km from the region center`)
+      errors.push(
+        `camera at ${camera.lat}, ${camera.lon} is ${offset.toFixed(1)} km from the region center ` +
+          `(${site.lat}, ${site.lon})`,
+      )
     }
   }
-  return { rows: lines.length - 1, camera, period, warnings }
+  return { rows: lines.length - 1, camera, period, errors }
 }
 
 const regions = loadRegions()
@@ -96,15 +105,19 @@ const sites = regions.map((site) => {
     console.log(`  –  ${site.name}: no data`)
     return { ...site, file: null }
   }
-  const { rows, camera, period, warnings } = checkCsv(join(CSV_DIR, file), site)
+  const { rows, camera, period, errors } = checkCsv(join(CSV_DIR, file), site)
+  if (errors.length > 0) {
+    console.warn(`  ✗  ${site.name}: ${file} skipped`)
+    for (const e of errors) console.warn(`     ${e}`)
+    warningCount++
+    return { ...site, file: null }
+  }
   copyFileSync(join(CSV_DIR, file), join(OUT_DIR, file))
   if (period) periods.set(period, [...(periods.get(period) ?? []), site.name])
   console.log(
     `  ✓  ${site.name}: ${rows ?? '?'} rows, ${period ?? '?'}` +
       (camera ? `, camera height ${camera.height} m (above the 1737.4 km sphere)` : ''),
   )
-  for (const w of warnings) console.warn(`     ⚠ ${w}`)
-  warningCount += warnings.length
   return { ...site, file }
 })
 

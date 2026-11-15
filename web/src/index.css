@@ -361,3 +361,121 @@ input[type='datetime-local'] {
 .bar-fill.both {
   background: var(--both);
 }
+
+/* Score info */
+
+.info-button {
+  display: inline-grid;
+  place-items: center;
+  width: 1.15rem;
+  height: 1.15rem;
+  margin-left: 0.35rem;
+  padding: 0;
+  border: 1px solid var(--muted);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--muted);
+  font: italic 600 0.7rem/1 Georgia, 'Times New Roman', serif;
+  vertical-align: middle;
+}
+
+.info-button:hover,
+.info-button[aria-expanded='true'] {
+  border-color: var(--text);
+  color: var(--text);
+}
+
+.score-info {
+  position: relative;
+  margin-bottom: 0.75rem;
+  padding: 0.75rem 2.25rem 0.75rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  font-size: 0.875rem;
+}
+
+.score-info p,
+.score-info ul {
+  margin: 0;
+}
+
+.score-info ul {
+  margin-top: 0.5rem;
+  padding-left: 1.1rem;
+  color: var(--muted);
+}
+
+.score-info li + li {
+  margin-top: 0.25rem;
+}
+
+.score-info strong {
+  color: var(--text);
+}
+
+.score-info .sun {
+  color: var(--sun);
+}
+
+.score-info .earth {
+  color: var(--earth);
+}
+
+.score-info-formula {
+  font-weight: 600;
+}
+
+.score-info-example {
+  margin-top: 0.6rem !important;
+  font-variant-numeric: tabular-nums;
+}
+
+.score-info-close {
+  position: absolute;
+  top: 0.4rem;
+  right: 0.4rem;
+  padding: 0 0.45rem;
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  font-size: 1.1rem;
+  line-height: 1.4;
+}
+
+.score-info-close:hover {
+  color: var(--text);
+}
+
+/* Info panel next to the controls */
+
+.info-panel {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  /* Small base width so it fits next to the other panels, then fill the rest. */
+  flex: 1 1 15rem;
+  max-width: 30rem;
+  /* Fieldset borders start at the middle of their legend; line up with them. */
+  margin-top: 0.62rem;
+  padding: 0.75rem 1rem;
+}
+
+.info-panel p {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.info-icon {
+  flex: none;
+  width: 1.5rem;
+  height: 1.5rem;
+  fill: none;
+  stroke: var(--earth);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.info-icon circle:last-child {
+  fill: var(--earth);
+}

@@ -97,6 +97,17 @@ export default function App() {
               onChange={(from, to) => setPeriod([from, to])}
             />
             <WeightSlider sunWeight={sunWeight} onChange={setSunWeight} />
+            <div className="control info-panel" role="note">
+              <svg className="info-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" y1="11" x2="12" y2="17" />
+                <circle cx="12" cy="7.5" r="0.6" />
+              </svg>
+              <p>
+                All visibility values are computed for a viewpoint{' '}
+                <strong>10{'\u00a0'}m above the ground</strong> at the center of each candidate region.
+              </p>
+            </div>
           </section>
 
           <main className="content">
@@ -107,7 +118,12 @@ export default function App() {
             </section>
             <section className="panel">
               <h2>Ranking</h2>
-              <RankingTable ranked={ranked} selectedId={selectedId} onSelect={setSelectedId} />
+              <RankingTable
+                ranked={ranked}
+                sunWeight={sunWeight}
+                selectedId={selectedId}
+                onSelect={setSelectedId}
+              />
             </section>
           </main>
         </>

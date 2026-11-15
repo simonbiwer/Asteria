@@ -5,28 +5,28 @@
       "name": "Amundsen Rim",
       "lat": -84.2287,
       "lon": 69.444,
-      "file": null
+      "file": "amundsen-rim.csv"
     },
     {
       "id": "nobile-rim-2",
       "name": "Nobile Rim 2",
       "lat": -83.954,
       "lon": 58.8221,
-      "file": null
+      "file": "nobile-rim-2.csv"
     },
     {
       "id": "haworth",
       "name": "Haworth",
       "lat": -86.7639,
       "lon": -22.777,
-      "file": null
+      "file": "haworth.csv"
     },
     {
       "id": "faustini-rim-a",
       "name": "Faustini Rim A",
       "lat": -87.8897,
       "lon": 90,
-      "file": null
+      "file": "faustini-rim-a.csv"
     },
     {
       "id": "de-gerlache-rim-2",
