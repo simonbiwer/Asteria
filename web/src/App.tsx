@@ -4,13 +4,22 @@ import { SouthPoleMap } from './components/SouthPoleMap'
 import { TimeRangePicker } from './components/TimeRangePicker'
 import { WeightSlider } from './components/WeightSlider'
 import { loadAll } from './lib/loadData'
-import { computeStats, dataTimeRange, rankSites } from './lib/metrics'
+import { computeStats, dataPeriods, dataTimeRange, rankSites } from './lib/metrics'
+import type { DataPeriod } from './lib/metrics'
 import type { Manifest, SiteData } from './types'
 
 type LoadState =
   | { status: 'loading' }
   | { status: 'error'; message: string }
-  | { status: 'ready'; manifest: Manifest; data: SiteData[]; range: [number, number] }
+  | {
+      status: 'ready'
+      manifest: Manifest
+      data: SiteData[]
+      range: [number, number]
+      periods: DataPeriod[]
+    }
+
+const formatDay = (t: number) => new Date(t).toISOString().slice(0, 10)
 
 export default function App() {
   const [load, setLoad] = useState<LoadState>({ status: 'loading' })
@@ -23,7 +32,7 @@ export default function App() {
       .then(({ manifest, data }) => {
         const range = dataTimeRange(data)
         if (!range) throw new Error('The CSV files contain no valid rows.')
-        setLoad({ status: 'ready', manifest, data, range })
+        setLoad({ status: 'ready', manifest, data, range, periods: dataPeriods(data) })
         setPeriod(range)
       })
       .catch((e: unknown) =>
@@ -64,6 +73,20 @@ export default function App() {
               )
             )
           })()}
+
+          {load.periods.length > 1 && (
+            <div className="banner warn">
+              <strong>Sites were computed for different time periods</strong>, so the ranking
+              compares different lighting conditions. Re-export all sites for the same period.
+              <ul>
+                {load.periods.map((p) => (
+                  <li key={p.from}>
+                    {formatDay(p.from)} – {formatDay(p.to)}: {p.siteNames.join(', ')}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
 
           <section className="controls">
             <TimeRangePicker

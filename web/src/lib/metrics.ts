@@ -67,6 +67,31 @@ export function rankSites(stats: SiteStats[], sunWeight: number): RankedSite[] {
   return [...withData, ...withoutData]
 }
 
+export interface DataPeriod {
+  from: number
+  to: number
+  siteNames: string[]
+}
+
+/**
+ * Groups sites by the time span their data covers (to the day). More than one
+ * group means the sites were computed for different periods.
+ */
+export function dataPeriods(data: SiteData[]): DataPeriod[] {
+  const day = (t: number) => new Date(t).toISOString().slice(0, 10)
+  const groups = new Map<string, DataPeriod>()
+  for (const { site, samples } of data) {
+    if (samples.length === 0) continue
+    const from = samples[0].t
+    const to = samples[samples.length - 1].t
+    const key = `${day(from)}/${day(to)}`
+    const group = groups.get(key) ?? { from, to, siteNames: [] }
+    group.siteNames.push(site.name)
+    groups.set(key, group)
+  }
+  return [...groups.values()].sort((a, b) => a.from - b.from)
+}
+
 /** Earliest and latest timestamp across all sites. */
 export function dataTimeRange(data: SiteData[]): [number, number] | null {
   let min = Infinity

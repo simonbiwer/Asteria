@@ -64,6 +64,17 @@ h2 {
   color: #f3d58a;
 }
 
+.banner.warn {
+  border-color: #7a2e2e;
+  background: #2a1414;
+  color: #f3a6a6;
+}
+
+.banner ul {
+  margin: 0.4rem 0 0;
+  padding-left: 1.2rem;
+}
+
 /* Controls */
 
 .controls {
