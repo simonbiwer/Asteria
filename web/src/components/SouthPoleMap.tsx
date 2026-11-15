@@ -1,7 +1,7 @@
 import { polarStereoSouth } from '../lib/projection'
 import type { RankedSite, Site } from '../types'
 
-/** e.g. "87.10°S 82.00°E · 2.0 m above surface" */
+/** e.g. "87.10°S 82.00°E · camera at 1955.7 m elevation" */
 function formatLocation({ lat, lon, heightM }: Site): string {
   const latStr = `${Math.abs(lat).toFixed(2)}°${lat < 0 ? 'S' : 'N'}`
   const lonNorm = ((((lon + 180) % 360) + 360) % 360) - 180
@@ -9,7 +9,8 @@ function formatLocation({ lat, lon, heightM }: Site): string {
     lonNorm === 0 || Math.abs(lonNorm) === 180
       ? `${Math.abs(lonNorm).toFixed(2)}°`
       : `${Math.abs(lonNorm).toFixed(2)}°${lonNorm > 0 ? 'E' : 'W'}`
-  const heightStr = heightM === undefined ? '' : ` · ${heightM.toFixed(1)} m above surface`
+  // CAMERA_HEIGHT is relative to the 1737.4 km reference sphere, not the ground.
+  const heightStr = heightM === undefined ? '' : ` · camera at ${heightM.toFixed(1)} m elevation`
   return `${latStr} ${lonStr}${heightStr}`
 }
 
@@ -44,7 +45,7 @@ const BASEMAP_R = Math.abs(polarStereoSouth(BASEMAP_EDGE_LAT, 0).y)
 
 /** South pole map in polar stereographic projection over a Clementine mosaic. */
 export function SouthPoleMap({ ranked, selectedId, onSelect }: Props) {
-  const top = ranked[0]
+  const top = ranked.find((r) => r.rank === 1)
   const view = EDGE_R + PAD
 
   return (
@@ -109,6 +110,7 @@ export function SouthPoleMap({ ranked, selectedId, onSelect }: Props) {
           const p = project(r.site.lat, r.site.lon)
           const isTop = r === top
           const isSelected = r.site.id === selectedId
+          const noData = r.rank === null
           const location = formatLocation(r.site)
           // Put labels on the side facing the map centre so they don't run off the edge.
           const labelLeft = p.x > 0
@@ -117,15 +119,21 @@ export function SouthPoleMap({ ranked, selectedId, onSelect }: Props) {
             <g
               key={r.site.id}
               transform={`translate(${p.x} ${p.y})`}
-              className={`site${isTop ? ' top' : ''}${isSelected ? ' selected' : ''}`}
+              className={`site${isTop ? ' top' : ''}${isSelected ? ' selected' : ''}${noData ? ' no-data' : ''}`}
               onClick={() => onSelect(r.site.id)}
             >
-              <title>{`#${r.rank} ${r.site.name} (score ${r.score.toFixed(1)})\n${location}`}</title>
+              <title>
+                {noData
+                  ? `${r.site.name} (no data)\n${location}`
+                  : `#${r.rank} ${r.site.name} (score ${r.score.toFixed(1)})\n${location}`}
+              </title>
               {isTop && <circle r={13} className="top-halo" />}
-              <circle r={isTop ? 8 : 6} className="marker" />
-              <text className="marker-rank" dy="0.35em">
-                {r.rank}
-              </text>
+              <circle r={isTop ? 8 : noData ? 4 : 6} className="marker" />
+              {!noData && (
+                <text className="marker-rank" dy="0.35em">
+                  {r.rank}
+                </text>
+              )}
               {(isTop || isSelected) && (
                 <text
                   className="marker-name"
