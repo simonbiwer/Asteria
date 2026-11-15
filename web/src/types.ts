@@ -8,6 +8,11 @@ export interface Site {
   lon: number
   /** CSV file name inside public/data/. */
   file: string
+  /**
+   * Height in metres above the surface that visibility was computed from
+   * (CAMERA_HEIGHT in the CSV). Not terrain elevation. Set when the CSV loads.
+   */
+  heightM?: number
 }
 
 export interface Manifest {

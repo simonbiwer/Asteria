@@ -50,9 +50,24 @@ export function parseVisibilityCsv(text: string, fileName: string): Sample[] {
     .sort((a, b) => a.t - b.t)
 }
 
+/** CAMERA_HEIGHT of the first data row, if the column is present. */
+function parseCameraHeight(text: string): number | undefined {
+  const { data } = Papa.parse<Record<string, string>>(text, {
+    header: true,
+    skipEmptyLines: true,
+    preview: 1,
+    transformHeader: (h) => h.trim(),
+  })
+  const height = Number(data[0]?.CAMERA_HEIGHT)
+  return Number.isFinite(height) ? height : undefined
+}
+
 async function loadSite(site: Site): Promise<SiteData> {
   const text = await fetchText(site.file)
-  return { site, samples: parseVisibilityCsv(text, site.file) }
+  return {
+    site: { ...site, heightM: parseCameraHeight(text) },
+    samples: parseVisibilityCsv(text, site.file),
+  }
 }
 
 export async function loadAll(): Promise<{ manifest: Manifest; data: SiteData[] }> {

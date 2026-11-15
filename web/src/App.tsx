@@ -73,6 +73,7 @@ export default function App() {
             <section className="panel map-panel">
               <h2>South pole</h2>
               <SouthPoleMap ranked={ranked} selectedId={selectedId} onSelect={setSelectedId} />
+              <p className="map-credit">Surface: Clementine uncontrolled mosaic (NASA/USGS)</p>
             </section>
             <section className="panel">
               <h2>Ranking</h2>
