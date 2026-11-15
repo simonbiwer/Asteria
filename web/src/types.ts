@@ -6,11 +6,19 @@ export interface Site {
   lat: number
   /** Selenographic longitude in degrees east. */
   lon: number
-  /** CSV file name inside public/data/, or null if not computed yet. */
-  file: string | null
+  /** CSV file name inside public/data/. */
+  file: string
+  /**
+   * Height in metres above the surface that visibility was computed from
+   * (CAMERA_HEIGHT in the CSV). Not terrain elevation. Set when the CSV loads.
+   */
+  heightM?: number
 }
 
 export interface Manifest {
+  /** True while the data is synthetic placeholder data. */
+  mock?: boolean
+  note?: string
   sites: Site[]
 }
 
@@ -48,6 +56,5 @@ export interface SiteStats {
 
 export interface RankedSite extends SiteStats {
   score: number
-  /** 1-based rank, or null if the site has no data in the selected period. */
-  rank: number | null
+  rank: number
 }

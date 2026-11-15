@@ -113,22 +113,13 @@ h2 {
   color: var(--muted);
 }
 
-input[type='datetime-local'],
-button {
+input[type='datetime-local'] {
   font: inherit;
   color: var(--text);
   background: var(--bg);
   border: 1px solid var(--border);
   border-radius: 6px;
   padding: 0.35rem 0.6rem;
-}
-
-button {
-  cursor: pointer;
-}
-
-button:hover {
-  border-color: var(--muted);
 }
 
 .weight-slider {
@@ -186,13 +177,27 @@ button:hover {
 
 .map-disc {
   fill: #1a1e27;
+}
+
+.basemap {
+  opacity: 0.85;
+}
+
+.map-outline {
+  fill: none;
   stroke: var(--border);
 }
 
 .graticule {
   fill: none;
-  stroke: #303746;
+  stroke: rgba(255, 255, 255, 0.22);
   stroke-width: 0.6;
+}
+
+.map-credit {
+  margin: 0.5rem 0 0;
+  font-size: 0.75rem;
+  color: var(--muted);
 }
 
 .graticule-label {
@@ -214,19 +219,19 @@ button:hover {
 }
 
 .site .marker {
-  fill: #3a4253;
-  stroke: var(--text);
+  fill: #ff8a3d;
+  stroke: #1a0d00;
   stroke-width: 0.8;
 }
 
-.site.selected .marker {
-  stroke: var(--earth);
-  stroke-width: 2;
+.site.top .marker {
+  stroke: #fff;
 }
 
-.site.top .marker {
-  fill: var(--accent);
+.site.selected .marker {
+  fill: #3ddc84;
   stroke: #fff;
+  stroke-width: 1.5;
 }
 
 .site.no-data .marker {
@@ -237,21 +242,17 @@ button:hover {
 
 .site .top-halo {
   fill: none;
-  stroke: var(--accent);
+  stroke: #ff8a3d;
   stroke-width: 1.2;
-  opacity: 0.6;
+  opacity: 0.7;
 }
 
 .marker-rank {
-  fill: var(--text);
+  fill: #1a0d00;
   font-size: 7px;
   font-weight: 700;
   text-anchor: middle;
   pointer-events: none;
-}
-
-.site.top .marker-rank {
-  fill: #1a1300;
 }
 
 .marker-name {
@@ -262,6 +263,11 @@ button:hover {
   stroke: var(--bg);
   stroke-width: 3px;
   pointer-events: none;
+}
+
+.marker-location {
+  font-size: 7px;
+  font-weight: 400;
 }
 
 /* Ranking table */
