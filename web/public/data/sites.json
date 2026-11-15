@@ -61,35 +61,35 @@
       "name": "Peak Near Shackleton",
       "lat": -88.811,
       "lon": 123.6901,
-      "file": null
+      "file": "peak-near-shackleton.csv"
     },
     {
       "id": "de-gerlache-rim-1",
       "name": "de Gerlache Rim 1",
       "lat": -88.6834,
       "lon": -67.9321,
-      "file": null
+      "file": "de-gerlache-rim-1.csv"
     },
     {
       "id": "leibnitz-beta-plateau",
       "name": "Leibnitz Beta Plateau",
       "lat": -85.4266,
       "lon": 31.7428,
-      "file": null
+      "file": "leibnitz-beta-plateau.csv"
     },
     {
       "id": "malapert-massif",
       "name": "Malapert Massif",
       "lat": -85.9948,
       "lon": -0.2358,
-      "file": null
+      "file": "malapert-massif.csv"
     },
     {
       "id": "de-gerlache-kocher-massif",
       "name": "de Gerlache-Kocher Massif",
       "lat": -85.8296,
       "lon": -116.322,
-      "file": null
+      "file": "de-gerlache-kocher-massif.csv"
     }
   ]
 }
