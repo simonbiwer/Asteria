@@ -41,9 +41,6 @@ export function TimeRangePicker({ from, to, min, max, onChange }: Props) {
             }}
           />
         </label>
-        <button type="button" onClick={() => onChange(min, max)}>
-          Full range
-        </button>
       </div>
     </fieldset>
   )

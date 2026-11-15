@@ -102,22 +102,13 @@ h2 {
   color: var(--muted);
 }
 
-input[type='datetime-local'],
-button {
+input[type='datetime-local'] {
   font: inherit;
   color: var(--text);
   background: var(--bg);
   border: 1px solid var(--border);
   border-radius: 6px;
   padding: 0.35rem 0.6rem;
-}
-
-button {
-  cursor: pointer;
-}
-
-button:hover {
-  border-color: var(--muted);
 }
 
 .weight-slider {
