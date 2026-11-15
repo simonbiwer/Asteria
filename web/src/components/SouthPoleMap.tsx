@@ -27,7 +27,7 @@ const PAD = 22
  * covering the same extent.
  */
 export function SouthPoleMap({ ranked, selectedId, onSelect }: Props) {
-  const top = ranked[0]
+  const top = ranked.find((r) => r.rank === 1)
   const view = EDGE_R + PAD
 
   return (
@@ -73,19 +73,26 @@ export function SouthPoleMap({ ranked, selectedId, onSelect }: Props) {
         const p = project(r.site.lat, r.site.lon)
         const isTop = r === top
         const isSelected = r.site.id === selectedId
+        const noData = r.rank === null
         return (
           <g
             key={r.site.id}
             transform={`translate(${p.x} ${p.y})`}
-            className={`site${isTop ? ' top' : ''}${isSelected ? ' selected' : ''}`}
+            className={`site${isTop ? ' top' : ''}${isSelected ? ' selected' : ''}${noData ? ' no-data' : ''}`}
             onClick={() => onSelect(r.site.id)}
           >
-            <title>{`#${r.rank} ${r.site.name} (score ${r.score.toFixed(1)})`}</title>
+            <title>
+              {noData
+                ? `${r.site.name} (no data)`
+                : `#${r.rank} ${r.site.name} (score ${r.score.toFixed(1)})`}
+            </title>
             {isTop && <circle r={13} className="top-halo" />}
-            <circle r={isTop ? 8 : 6} className="marker" />
-            <text className="marker-rank" dy="0.35em">
-              {r.rank}
-            </text>
+            <circle r={isTop ? 8 : noData ? 4 : 6} className="marker" />
+            {!noData && (
+              <text className="marker-rank" dy="0.35em">
+                {r.rank}
+              </text>
+            )}
             {(isTop || isSelected) && (
               <text className="marker-name" x={12} dy="0.35em">
                 {r.site.name}

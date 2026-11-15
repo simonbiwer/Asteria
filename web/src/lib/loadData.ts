@@ -51,6 +51,7 @@ export function parseVisibilityCsv(text: string, fileName: string): Sample[] {
 }
 
 async function loadSite(site: Site): Promise<SiteData> {
+  if (!site.file) return { site, samples: [] }
   const text = await fetchText(site.file)
   return { site, samples: parseVisibilityCsv(text, site.file) }
 }

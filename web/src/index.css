@@ -218,6 +218,12 @@ button:hover {
   stroke: #fff;
 }
 
+.site.no-data .marker {
+  fill: none;
+  stroke: var(--muted);
+  stroke-dasharray: 2 1.5;
+}
+
 .site .top-halo {
   fill: none;
   stroke: var(--accent);
@@ -288,6 +294,14 @@ button:hover {
 
 .ranking tbody tr:first-child .rank {
   color: var(--accent);
+}
+
+.ranking tbody tr.no-data {
+  color: var(--muted);
+}
+
+.ranking .muted {
+  font-style: italic;
 }
 
 .ranking .rank,

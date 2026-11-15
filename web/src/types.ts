@@ -6,14 +6,11 @@ export interface Site {
   lat: number
   /** Selenographic longitude in degrees east. */
   lon: number
-  /** CSV file name inside public/data/. */
-  file: string
+  /** CSV file name inside public/data/, or null if not computed yet. */
+  file: string | null
 }
 
 export interface Manifest {
-  /** True while the data is synthetic placeholder data. */
-  mock?: boolean
-  note?: string
   sites: Site[]
 }
 
@@ -51,5 +48,6 @@ export interface SiteStats {
 
 export interface RankedSite extends SiteStats {
   score: number
-  rank: number
+  /** 1-based rank, or null if the site has no data in the selected period. */
+  rank: number | null
 }

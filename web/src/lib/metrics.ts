@@ -47,18 +47,24 @@ export function computeStats({ site, samples }: SiteData, from: number, to: numb
 }
 
 /**
- * Ranks sites by a weighted score (0–100).
+ * Ranks sites by a weighted score (0–100). Sites without data in the
+ * selected period get rank null and are listed last.
  * @param sunWeight 0 = only Earth visibility counts, 1 = only sunlight counts.
  */
 export function rankSites(stats: SiteStats[], sunWeight: number): RankedSite[] {
-  return stats
-    .map((s) => ({
-      ...s,
-      score: sunWeight * s.sunPct + (1 - sunWeight) * s.earthPct,
-      rank: 0,
-    }))
+  const scored = stats.map((s) => ({
+    ...s,
+    score: sunWeight * s.sunPct + (1 - sunWeight) * s.earthPct,
+  }))
+  const withData = scored
+    .filter((s) => s.sampleCount > 1)
     .sort((a, b) => b.score - a.score)
     .map((s, i) => ({ ...s, rank: i + 1 }))
+  const withoutData = scored
+    .filter((s) => s.sampleCount <= 1)
+    .sort((a, b) => a.site.name.localeCompare(b.site.name))
+    .map((s) => ({ ...s, rank: null }))
+  return [...withData, ...withoutData]
 }
 
 /** Earliest and latest timestamp across all sites. */

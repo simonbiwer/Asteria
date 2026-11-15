@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Generated from ../data by scripts/prepare-data.mjs
+public/data/

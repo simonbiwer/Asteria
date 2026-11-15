@@ -1,34 +1,32 @@
 {
-  "mock": true,
-  "note": "Synthetic visibility data at the region centers. Replace public/data/ with the real Moon Trek exports.",
   "sites": [
     {
       "id": "amundsen-rim",
       "name": "Amundsen Rim",
       "lat": -84.2287,
       "lon": 69.444,
-      "file": "amundsen-rim.csv"
+      "file": null
     },
     {
       "id": "nobile-rim-2",
       "name": "Nobile Rim 2",
       "lat": -83.954,
       "lon": 58.8221,
-      "file": "nobile-rim-2.csv"
+      "file": null
     },
     {
       "id": "haworth",
       "name": "Haworth",
       "lat": -86.7639,
       "lon": -22.777,
-      "file": "haworth.csv"
+      "file": null
     },
     {
       "id": "faustini-rim-a",
       "name": "Faustini Rim A",
       "lat": -87.8897,
       "lon": 90,
-      "file": "faustini-rim-a.csv"
+      "file": null
     },
     {
       "id": "de-gerlache-rim-2",
@@ -63,35 +61,35 @@
       "name": "Peak Near Shackleton",
       "lat": -88.811,
       "lon": 123.6901,
-      "file": "peak-near-shackleton.csv"
+      "file": null
     },
     {
       "id": "de-gerlache-rim-1",
       "name": "de Gerlache Rim 1",
       "lat": -88.6834,
       "lon": -67.9321,
-      "file": "de-gerlache-rim-1.csv"
+      "file": null
     },
     {
       "id": "leibnitz-beta-plateau",
       "name": "Leibnitz Beta Plateau",
       "lat": -85.4266,
       "lon": 31.7428,
-      "file": "leibnitz-beta-plateau.csv"
+      "file": null
     },
     {
       "id": "malapert-massif",
       "name": "Malapert Massif",
       "lat": -85.9948,
       "lon": -0.2358,
-      "file": "malapert-massif.csv"
+      "file": null
     },
     {
       "id": "de-gerlache-kocher-massif",
       "name": "de Gerlache-Kocher Massif",
       "lat": -85.8296,
       "lon": -116.322,
-      "file": "de-gerlache-kocher-massif.csv"
+      "file": null
     }
   ]
 }

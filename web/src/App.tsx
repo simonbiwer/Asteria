@@ -52,11 +52,18 @@ export default function App() {
 
       {load.status === 'ready' && period && (
         <>
-          {load.manifest.mock && (
-            <p className="banner">
-              Showing <strong>mock data</strong>. {load.manifest.note}
-            </p>
-          )}
+          {(() => {
+            const total = load.manifest.sites.length
+            const withData = load.manifest.sites.filter((s) => s.file).length
+            return (
+              withData < total && (
+                <p className="banner">
+                  Visibility data available for <strong>{withData} of {total}</strong> sites.
+                  Sites without data are shown but not ranked.
+                </p>
+              )
+            )
+          })()}
 
           <section className="controls">
             <TimeRangePicker

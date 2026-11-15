@@ -33,21 +33,35 @@ export function RankingTable({ ranked, selectedId, onSelect }: Props) {
           </tr>
         </thead>
         <tbody>
-          {ranked.map((r) => (
-            <tr
-              key={r.site.id}
-              className={r.site.id === selectedId ? 'selected' : undefined}
-              onClick={() => onSelect(r.site.id)}
-            >
-              <td className="rank">{r.rank}</td>
-              <td>{r.site.name}</td>
-              <td className="score">{r.sampleCount > 0 ? r.score.toFixed(1) : '—'}</td>
-              <PctCell value={r.sunPct} kind="sun" />
-              <PctCell value={r.earthPct} kind="earth" />
-              <PctCell value={r.bothPct} kind="both" />
-              <td className="num">{r.longestDarkHours.toFixed(0)} h</td>
-            </tr>
-          ))}
+          {ranked.map((r) => {
+            const classes = [
+              r.site.id === selectedId && 'selected',
+              r.rank === null && 'no-data',
+            ].filter(Boolean)
+            return (
+              <tr
+                key={r.site.id}
+                className={classes.join(' ') || undefined}
+                onClick={() => onSelect(r.site.id)}
+              >
+                <td className="rank">{r.rank ?? '–'}</td>
+                <td>{r.site.name}</td>
+                {r.rank === null ? (
+                  <td colSpan={5} className="muted">
+                    {r.site.file ? 'no data in selected period' : 'no data yet'}
+                  </td>
+                ) : (
+                  <>
+                    <td className="score">{r.score.toFixed(1)}</td>
+                    <PctCell value={r.sunPct} kind="sun" />
+                    <PctCell value={r.earthPct} kind="earth" />
+                    <PctCell value={r.bothPct} kind="both" />
+                    <td className="num">{r.longestDarkHours.toFixed(0)} h</td>
+                  </>
+                )}
+              </tr>
+            )
+          })}
         </tbody>
       </table>
     </div>
